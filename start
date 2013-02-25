@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+
+from wsgiref.simple_server import make_server
+from cgi import parse_qs
+from json import loads
+from subprocess import call
+from sys import stdout, stderr
+
+handlers = {
+        'sites': '/root/sites/setup.sh',
+        'conf': '/root/conf/setup.sh',
+        }
+
+def application(environ, start_response):
+
+    try:
+        request_body_size = int(environ.get('CONTENT_LENGTH', 0))
+    except (ValueError):
+        request_body_size = 0
+    request_body = environ['wsgi.input'].read(request_body_size)
+    data = parse_qs(request_body)
+
+    try:
+        payload = loads(data['payload'][0])    
+        repo = payload['repository']['name']
+        if repo in handlers:
+            call(handlers[repo], shell=True, stdout=stdout, stderr=stderr)
+        else:
+            print >> stderr, 'Unknown repo "%s".' % repo
+    except (KeyError, IndexError):
+        print >> stderr, 'Cannot parse request.'
+
+    status = '200 OK'
+    headers = [('Content-type', 'text/plain')]
+    start_response(status, headers)
+
+    return 'OK'
+
+httpd = make_server('', 51249, application)
+httpd.serve_forever()
