@@ -37,4 +37,5 @@ def application(environ, start_response):
     return 'OK'
 
 httpd = make_server('', 51249, application)
+print "Starting server..."
 httpd.serve_forever()
