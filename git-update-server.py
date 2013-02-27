@@ -56,8 +56,9 @@ def application(environ, start_response):
     return 'OK'
 
 port = 51249
-httpd = make_server('', 51249, application)
-logger.info('Listening on port [%d].', 51249)
+
+httpd = make_server('', port, application)
+logger.info('Listening on port [%d].', port)
 
 try:
     httpd.serve_forever()
