@@ -1,10 +1,32 @@
+#!/usr/bin/env python
+
 import os
 import sys
 import argparse
 import logging
 
+from git_update_server import GitUpdateServer
+
 def main(args):
-    print args
+    handlers = {}
+    for repo, path in args.git_pull or []:
+        if repo not in handlers:
+            handlers[repo] = []
+        handlers[repo].append('cd "%s" && git pull' % path)
+    for repo, command in args.command or []:
+        if repo not in handlers:
+            handlers[repo] = []
+        handlers[repo].append(command)
+
+    logger = logging.getLogger('git-update-server')
+    logger.setLevel(args.log_level)
+    handler = logging.StreamHandler(args.log_output)
+    formatter = logging.Formatter(fmt='%(name)s: %(asctime)s: %(levelname)s: %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
+    gus = GitUpdateServer(port=args.port, handlers=handlers, logger=logger)
+    gus.start()
 
 if __name__ == "__main__":
 
@@ -17,8 +39,8 @@ if __name__ == "__main__":
     actions_group.add_argument('--git-pull', nargs=2, metavar=('repo', 'path'), help='run `git pull` in `path` when repository `repo` is updated', action='append')
     actions_group.add_argument('--command', nargs=2, metavar=('repo', 'command'), help='run `command` when repository `repo` is updated', action='append')
     logging_group = parser.add_argument_group('logging')
-    logging_group.add_argument('--log-level', metavar='level', choices=LOG_LEVEL, default='DEBUG', help='log level (default: DEBUG)')
-    logging_group.add_argument('--log-output', metavar='output', type=argparse.FileType('w'), default=sys.stdout, help='where to log output (default: stdout)')
+    logging_group.add_argument('--log-level', metavar='level', choices=LOG_LEVEL, default='INFO', help='log level (default: INFO)')
+    logging_group.add_argument('--log-output', metavar='output', type=argparse.FileType('w'), default=sys.stderr, help='where to log output (default: stderr)')
 
     args = parser.parse_args()
     args.log_level = LOG_LEVEL[args.log_level]
