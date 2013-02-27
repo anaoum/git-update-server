@@ -1,7 +1,3 @@
 Runs a HTTP server for GitHub (or BitBucket) POST service hooks and allows a
 local script or command to be run (such as `git pull`) whenever an update is
 pushed to the remote repository.
-
-You might want to add the following line to your cron:
-
-@reboot /root/git-update-server/git-update-server.py &
