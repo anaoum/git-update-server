@@ -1,3 +1,40 @@
 Runs a HTTP server for GitHub (or BitBucket) POST service hooks and allows a
 local script or command to be run (such as `git pull`) whenever an update is
 pushed to the remote repository.
+
+Install using:
+
+    python setup.py install
+
+Then refer to the help:
+
+    git-update-server -h
+
+    usage: git-update-server [-h] [--port port] [--daemon] [--git-pull repo path]
+                             [--command repo command] [--log-level level]
+                             [--log-output output]
+
+    This program runs a web server to receive POST notifications when a git
+    repository is updated on GitHub (or BitBucket). You can configure this server
+    to git pull local clones of the repositories, or even run your own command
+    whenever a repository is updated.
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      --port port           the port on which to listen for HTTP POST requests
+                            from GitHub or BitBucket (default: 51249)
+      --daemon              run the server as a daemon
+
+    actions:
+      Actions to take when a repository is updated. You should specify at least
+      one of these actions, otherwise the server will be quite useless. You can
+      add multiple actions for multiple repositories.
+
+      --git-pull repo path  run `git pull` in `path` when repository `repo` is
+                            updated
+      --command repo command
+                            run `command` when repository `repo` is updated
+
+    logging:
+      --log-level level     log level (default: INFO)
+      --log-output output   where to log output (default: stderr)
