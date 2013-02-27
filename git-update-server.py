@@ -18,7 +18,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 handlers = {
-        'sites': '/home/anaoum/repos/setup.sh',
+        'sites': '/root/sites/setup.sh',
         'conf': '/root/conf/setup.sh',
         }
 
