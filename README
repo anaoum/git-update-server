@@ -4,4 +4,4 @@ pushed to the remote repository.
 
 You might want to add the following line to your cron:
 
-@reboot /root/git-update-server/git-update-server.py
+@reboot /root/git-update-server/git-update-server.py &
