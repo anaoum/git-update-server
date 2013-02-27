@@ -40,7 +40,7 @@ if __name__ == "__main__":
     actions_group.add_argument('--command', nargs=2, metavar=('repo', 'command'), help='run `command` when repository `repo` is updated', action='append')
     logging_group = parser.add_argument_group('logging')
     logging_group.add_argument('--log-level', metavar='level', choices=LOG_LEVEL, default='INFO', help='log level (default: INFO)')
-    logging_group.add_argument('--log-output', metavar='output', type=argparse.FileType('w'), default=sys.stderr, help='where to log output (default: stderr)')
+    logging_group.add_argument('--log-output', metavar='output', type=argparse.FileType('a'), default=sys.stderr, help='where to log output (default: stderr)')
 
     args = parser.parse_args()
     args.log_level = LOG_LEVEL[args.log_level]
