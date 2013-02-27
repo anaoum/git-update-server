@@ -4,11 +4,15 @@ pushed to the remote repository.
 
 Install using:
 
-    python setup.py install
+    $ python setup.py install
+
+or
+
+    $ pip install git-update-server
 
 Then refer to the help:
 
-    git-update-server -h
+    $ git-update-server -h
 
     usage: git-update-server [-h] [--port port] [--daemon] [--git-pull repo path]
                              [--command repo command] [--log-level level]
