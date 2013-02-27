@@ -47,7 +47,8 @@ if __name__ == "__main__":
 
     if args.daemon:
 
-        args.log_output = open('/dev/null', 'w')
+        if args.log_output == sys.stderr:
+            args.log_output = open('/dev/null', 'w')
 
         # do the UNIX double-fork magic, see Stevens' "Advanced 
         # Programming in the UNIX Environment" for details (ISBN 0201563177)

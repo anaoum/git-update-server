@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='git-update-server',
-      version='0.1',
+      version='0.20',
       description='HTTP server to handle POST notifications of updated repositories on GitHub and BitBucket.',
       author='Andrew Naoum',
       author_email='andy.naoum@gmail.com',
